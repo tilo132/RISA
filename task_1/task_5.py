@@ -8,6 +8,8 @@ rob.connect()
 
 SIZE_REACHED = 1000
 SIZE_NEAR = 50
+CENTER_MIN = 35
+CENTER_MAX = 65
 
 def on_tap():
     tap = rob.readTapSensor()
@@ -24,6 +26,7 @@ def on_tap():
 def search_for_color(target_color):
     color_detected = False
     color_reached = False
+    last_side = 'left'
 
     rob.moveTiltTo(105, 10)
 
@@ -37,22 +40,37 @@ def search_for_color(target_color):
     rob.stopMotors()
 
     while color_reached == False:
-        print('Blob position: ', rob.readColorBlob(target_color).posx)
-        print('Blob distance: ', rob.readColorBlob(target_color).size)
-        
-        if 0 <= rob.readColorBlob(target_color).posx < 45 and rob.readColorBlob(target_color).size < SIZE_REACHED:
-            print('Object on the left')
-            rob.moveWheelsByTime(-10, 10, 0.1)
-        elif 45 <= rob.readColorBlob(target_color).posx <= 55 and rob.readColorBlob(target_color).size < SIZE_REACHED:
-            print('Object in the middle')
-            rob.moveWheelsByTime(10, 10, 0.5) 
-        elif 55 < rob.readColorBlob(target_color).posx <= 100 and rob.readColorBlob(target_color).size < SIZE_REACHED:
-            print('Object on the right')
-            rob.moveWheelsByTime(10, -10, 0.1)
-        else:
+        blob = rob.readColorBlob(target_color)
+        print('Blob position: ', blob.posx)
+        print('Blob distance: ', blob.size)
+
+        if blob.size == 0:
+            print('Object lost')
+            if last_side == 'left':
+                rob.moveWheelsByTime(-10, 10, 0.1)
+            else:
+                rob.moveWheelsByTime(10, -10, 0.1)
+            rob.wait(0.1)
+        elif blob.size >= SIZE_REACHED:
             color_reached = True
             print('Object reached')
-    
+        elif blob.posx < CENTER_MIN:
+            print('Object on the left')
+            last_side = 'left'
+            rob.moveWheelsByTime(-10, 10, 0.1)
+            rob.wait(0.1)
+        elif blob.posx > CENTER_MAX:
+            print('Object on the right')
+            last_side = 'right'
+            rob.moveWheelsByTime(10, -10, 0.1)
+            rob.wait(0.1)
+        else:
+            print('Object in the middle')
+            rob.moveWheelsByTime(10, 10, 0.5)
+            rob.wait(0.1)
+
+    rob.stopMotors()
+
 rob.whenATapIsDetected(on_tap)
 
 while True:
