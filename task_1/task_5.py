@@ -2,6 +2,7 @@ from robobopy.Robobo import Robobo
 from robobopy.utils.LED import LED
 from robobopy.utils.Color import Color
 from robobopy.utils.BlobColor import BlobColor
+from robobopy.utils.IR import IR
 
 rob = Robobo('localhost')
 rob.connect()
@@ -11,8 +12,15 @@ SIZE_NEAR = 50
 CENTER_MIN = 35
 CENTER_MAX = 65
 
+def avoid_collision():
+    distance_C = rob.readIRSensor(IR.FrontC)
+    print('Distance from front center sensor: ', distance_C)
+    if distance_C > 80:
+        rob.moveWheelsByTime(-10, -10,1.5, wait=True)
+        
 def on_tap():
     tap = rob.readTapSensor()
+    avoid_collision()
     if tap.zone == 'eye':
         rob.setLedColorTo(LED.All, Color.RED)
         search_for_color(BlobColor.RED)
@@ -22,6 +30,8 @@ def on_tap():
     elif tap.zone == 'forehead':
         rob.setLedColorTo(LED.All, Color.BLUE)
         search_for_color(BlobColor.BLUE)
+        
+
 
 def search_for_color(target_color):
     color_detected = False
@@ -31,7 +41,7 @@ def search_for_color(target_color):
     rob.moveTiltTo(105, 10)
 
     while color_detected == False:
-        rob.moveWheels(10,0)
+        rob.moveWheels(10,-10)
         rob.wait(0.1)
         if rob.readColorBlob(target_color).size > 0:
             print('Object detected')
