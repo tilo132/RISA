@@ -21,7 +21,6 @@ speed=7
 def search_for_color(target_color):
     color_detected = False
     
-
     rob.moveTiltTo(105, 10)
     if rob.readColorBlob(target_color).size > 0 and rob.readColorBlob(target_color).posx > 10 and rob.readColorBlob(target_color).posx < 90:
                 print('Object detected')
@@ -57,7 +56,11 @@ while True:
     print('Error: ', error, ' | Integral: ', integral, ' | Derivative: ', derivative, ' | Correction: ', correction)
     previous_error = error
     rob.moveWheels(left_speed, right_speed)
-    
+
+    if blob.posy > 90:
+        rob.stopMotors()
+        print('Object reached')
+        break    
     
     
 
