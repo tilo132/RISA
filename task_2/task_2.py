@@ -5,6 +5,8 @@ from robobopy.utils.BlobColor import BlobColor
 from robobopy.utils.IR import IR
 import numpy as np
 
+# MAP: FOUR CYLINDER is recommended
+
 rob = Robobo('localhost')
 rob.connect()
 
@@ -17,14 +19,19 @@ integral=0
 previous_error=0
 goal=50
 speed=7
+''' 
+spins the robot till the target color/pillar is found
+'''
 
 def search_for_color(target_color):
     color_detected = False
     
     rob.moveTiltTo(105, 10)
+    # search for color and it is somehow centered in picture -> more stable
     if rob.readColorBlob(target_color).size > 0 and rob.readColorBlob(target_color).posx > 10 and rob.readColorBlob(target_color).posx < 90:
                 print('Object detected')
                 color_detected = True
+                return 
     while color_detected == False:
         rob.moveWheels(10,-10)
         rob.wait(0.1)
@@ -33,30 +40,38 @@ def search_for_color(target_color):
             color_detected = True
 
     rob.stopMotors()
-    return True
+    
+    
+
+#initialize search for color
 search_for_color(TARGET_COLOR)
 while True:
     rob.wait(0.1)
-    #search_for_color(TARGET_COLOR)
+    #fallback if color is lost -> search for it again
+    search_for_color(TARGET_COLOR)
     
     blob = rob.readColorBlob(TARGET_COLOR)
     print('Blob position: ', blob.posx)
     
-    error=blob.posx - 50 if rob.readColorBlob(TARGET_COLOR).size > 0 else 0
+    #pid logic
+    error=blob.posx - 50 
     integral += error
     integral = np.clip(integral, -100, 100)
     derivative = error - previous_error
     correction = round(kp*error + ki*integral + kd*derivative)
     correction = np.clip(correction, 0, speed) if correction > 0 else np.clip(correction, -speed, 0)
+    
+    #speed calculation and motor control 
     right_speed = speed + correction
     left_speed = speed - correction
     right_speed = np.clip(right_speed, 0, speed) if right_speed > 0 else np.clip(right_speed, -speed, 0)
-    left_speed = np.clip(left_speed, 0, speed) if left_speed > 0 else np.clip(left_speed, -speed, 0)
+    left_speed = np.clip(left_speed, 0, speed) if left_speed > 0 else np.clip(left_speed, -speed, 0)  
     print('Left speed: ', left_speed, ' | Right speed: ', right_speed)
     print('Error: ', error, ' | Integral: ', integral, ' | Derivative: ', derivative, ' | Correction: ', correction)
     previous_error = error
     rob.moveWheels(left_speed, right_speed)
 
+    #on Map Cylinder the robot stops early, because otherwise the cylinder is not anymore in field of view of camera
     if blob.posy > 90:
         rob.stopMotors()
         print('Object reached')
