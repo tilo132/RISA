@@ -1,0 +1,13 @@
+highest priority
+- avoid_walls
+- have ball(pillar) in gripper
+- avoid oponents        
+- find goal of oponent
+- move ball(pillar) to goal
+- goal celebration 
+
+
+
+
+
+lowest priority
