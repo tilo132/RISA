@@ -1,0 +1,326 @@
+{
+  "Version": 9,
+  "Robots": [
+    "Default",
+    "AGV"
+  ],
+  "Base64Thumbnail": null,
+  "FloorType": "GRID",
+  "FloorSize": [
+    25,
+    25
+  ],
+  "TerrainElements": [
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        -25,
+        -4,
+        -25,
+        5
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        26,
+        -4,
+        26,
+        5
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        26,
+        6,
+        23,
+        6
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        -22,
+        6,
+        -25,
+        6
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        -22,
+        -5,
+        -25,
+        -5
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        23,
+        7,
+        23,
+        25
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        -22,
+        7,
+        -22,
+        25
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        22,
+        25,
+        -22,
+        25
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        26,
+        -5,
+        23,
+        -5
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        23,
+        -24,
+        23,
+        -6
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        -22,
+        -24,
+        -22,
+        -6
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    },
+    {
+      "Id": "WALL",
+      "Subtype": null,
+      "Material": "DEFAULT",
+      "Coords": [
+        22,
+        -24,
+        -21,
+        -24
+      ],
+      "Tier": 0,
+      "Height": 2,
+      "Rotation": 0
+    }
+  ],
+  "WorldObjectElements": [
+    {
+      "Id": "TAG",
+      "Name": "TAG",
+      "Subtype": null,
+      "Material": null,
+      "PropertyValue": "0",
+      "Coords": [
+        -24,
+        1
+      ],
+      "Tier": 0,
+      "Rotation": 90
+    },
+    {
+      "Id": "TAG",
+      "Name": "TAG",
+      "Subtype": null,
+      "Material": null,
+      "PropertyValue": "1",
+      "Coords": [
+        26,
+        0
+      ],
+      "Tier": 0,
+      "Rotation": 270
+    }
+  ],
+  "SpawnerElements": [
+    {
+      "Id": "SPAWNER",
+      "Coords": [
+        19,
+        -1
+      ],
+      "Tier": 0,
+      "Rotation": 270,
+      "Robot": null,
+      "Modules": [
+        12
+      ]
+    }
+  ],
+  "SpecialZoneElements": [
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|BLUE",
+      "Visible": false,
+      "Coords": [
+        20,
+        -22,
+        1,
+        23
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    },
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|RED",
+      "Visible": false,
+      "Coords": [
+        -11,
+        -18,
+        -20,
+        -9
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    },
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|RED",
+      "Visible": false,
+      "Coords": [
+        -11,
+        10,
+        -20,
+        19
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    },
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|RED",
+      "Visible": false,
+      "Coords": [
+        -8,
+        -4,
+        -17,
+        5
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    },
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|RED",
+      "Visible": false,
+      "Coords": [
+        0,
+        -8,
+        -6,
+        11
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    },
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|RED",
+      "Visible": false,
+      "Coords": [
+        0,
+        -19,
+        -9,
+        -10
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    },
+    {
+      "Id": "OBJECTSPAWN",
+      "Subtype": null,
+      "PropertyValue": "CYLINDER-BALL|RED",
+      "Visible": false,
+      "Coords": [
+        0,
+        14,
+        -9,
+        23
+      ],
+      "Tier": 0,
+      "Rotation": 0
+    }
+  ]
+}
