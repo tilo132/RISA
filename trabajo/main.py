@@ -6,6 +6,7 @@ from robobopy.Robobo import Robobo
 
 from behaviour_mod.avoid_wall import AvoidWall
 from behaviour_mod.find_ball import FindBall
+from behaviour_mod.drive import Drive
 
 
 import time
@@ -13,6 +14,7 @@ import time
 def main():
     rob = Robobo("localhost")
     rob.connect()
+    rob.wait(1)
 
     try:
         # Diccionario que se pasará a los comportamientos
@@ -20,13 +22,16 @@ def main():
         params = {"stop": False}
 
         # Creación de los comportamientos
-        find_ball_behaviour = FindBall(rob, [], params)
-        avoid_wall_behaviour = AvoidWall(rob, [find_ball_behaviour], params)
+        drive_behaviour = Drive(rob, [], params)
 
-        threads = [find_ball_behaviour, avoid_wall_behaviour]
+        find_ball_behaviour = FindBall(rob, [drive_behaviour], params)
+        avoid_wall_behaviour = AvoidWall(rob, [find_ball_behaviour,drive_behaviour], params)
+
+        threads = [find_ball_behaviour, avoid_wall_behaviour, drive_behaviour]
 
         find_ball_behaviour.start()
         avoid_wall_behaviour.start()
+        drive_behaviour.start()
 
         while not params["stop"]:
             time.sleep(0.1)

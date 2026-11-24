@@ -7,12 +7,13 @@ from robobopy.utils.BlobColor import BlobColor
 
 
 
-TARGET_COLOR = BlobColor.RED
+TARGET_COLOR = BlobColor.BLUE
 KP = 0.2
 KI = 0.02
 KD = 0.1
 GOAL = 50
 SPEED = 7
+virtual_distance=88
 
 
 
@@ -21,17 +22,24 @@ class FindBall(Behaviour):
         super().__init__(robot, supress_list, params)
         self.integral = 0
         self.previous_error = 0
+        
 
     #Método que define cuándo se activa el comportamiento
     def take_control(self):
-        return not self.supress
+        if not self.supress:
+            blob = self.robot.readColorBlob(TARGET_COLOR)
+            #exits
+            
+            
+            if blob.size==0 and blob.posy < virtual_distance:
+                return True
 
     def _search_for_color(self, target_color):
         self.robot.moveTiltTo(105, 10, wait=True)
         blob = self.robot.readColorBlob(target_color)
 
         if blob.size > 0 and 10 < blob.posx < 90:
-            print("Object detected")
+            #print("Object detected")
             return True
 
         while not self.stopped() and not self.supress:
@@ -39,7 +47,7 @@ class FindBall(Behaviour):
             self.robot.wait(0.1)
             blob = self.robot.readColorBlob(target_color)
             if blob.size > 0 and 10 < blob.posx < 90:
-                print("Object detected")
+                #print("Object detected")
                 self.robot.stopMotors()
                 return True
 
@@ -63,7 +71,7 @@ class FindBall(Behaviour):
                     print("Object lost")
                     continue
 
-                print("Blob position: ", blob.posx)
+                #print("Blob position: ", blob.posx)
 
                 error = blob.posx - GOAL
                 self.integral += error
@@ -76,15 +84,14 @@ class FindBall(Behaviour):
 
                 right_speed = max(-SPEED, min(SPEED, SPEED + correction))
                 left_speed = max(-SPEED, min(SPEED, SPEED - correction))
-                print("Left speed: ", left_speed, " | Right speed: ", right_speed)
-                print("Error: ", error, " | Integral: ", self.integral,
-                      " | Derivative: ", derivative, " | Correction: ", correction)
+                #print("Left speed: ", left_speed, " | Right speed: ", right_speed)
+                #print("Error: ", error, " | Integral: ", self.integral," | Derivative: ", derivative, " | Correction: ", correction)
                 self.previous_error = error
                 self.robot.moveWheels(left_speed, right_speed)
 
-                if blob.posy > 90:
+                if blob.posy > virtual_distance:
                     print("Object reached")
-                    self.set_stop()
+                    
                     break
         finally:
             self.robot.stopMotors()
