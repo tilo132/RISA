@@ -15,7 +15,6 @@ TARGET_COLOR = BlobColor.GREEN
 KP = 0.2
 KI = 0.02
 KD = 0.1
-GOAL = 50
 SPEED = 7
 virtual_distance=88
 
@@ -26,6 +25,9 @@ class FindGoal(Behaviour):
             super().__init__(robot, supress_list, params)
             self.integral = 0
             self.previous_error = 0
+            self.goal=50
+            self.left= False
+            self.left_init=False
     
         #Método que define cuándo se activa el comportamiento
     def take_control(self):
@@ -43,11 +45,18 @@ class FindGoal(Behaviour):
         blob = self.robot.readColorBlob(target_color)
 
         if blob.size > 0 and 10 < blob.posx < 90:
-            print("Object detected")
+            #print("Object detected")
             return True
 
         while not self.stopped() and not self.supress:
-            self.robot.moveWheels(1, 5)
+            angle=self.robot.readOrientationSensor().yaw
+            if not self.left_init:
+                self.left= angle>=0
+                self.left_init=True
+            if self.left:
+                self.robot.moveWheels(1, 5)
+            else:
+                self.robot.moveWheels(5,1)
             self.robot.wait(0.1)
             blob = self.robot.readColorBlob(target_color)
             if blob.size > 0 and 10 < blob.posx < 90:
@@ -75,9 +84,18 @@ class FindGoal(Behaviour):
                     print("Goal lost")
                     continue
 
-                print("Blob position: ", blob.posx)
+                #print("Blob position: ", blob.posx)
+                angle = self.robot.readOrientationSensor().yaw
 
-                error = blob.posx - GOAL
+                
+                angle = self.robot.readOrientationSensor().yaw
+
+                
+
+                error = blob.posx - self.goal
+                
+
+
                 self.integral += error
                 self.integral = max(-100, min(100, self.integral))
                 derivative = error - self.previous_error
@@ -88,8 +106,8 @@ class FindGoal(Behaviour):
 
                 right_speed = max(-SPEED, min(SPEED, SPEED + correction))
                 left_speed = max(-SPEED, min(SPEED, SPEED - correction))
-                print("Left speed: ", left_speed, " | Right speed: ", right_speed)
-                print("Error: ", error, " | Integral: ", self.integral," | Derivative: ", derivative, " | Correction: ", correction)
+                #print("Left speed: ", left_speed, " | Right speed: ", right_speed)
+                #print("Error: ", error, " | Integral: ", self.integral," | Derivative: ", derivative, " | Correction: ", correction)
                 self.previous_error = error
                 self.robot.moveWheels(left_speed, right_speed)
 
