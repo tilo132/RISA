@@ -31,7 +31,7 @@ class FindBall(Behaviour):
             #exits
             
             
-            if blob.size==0 and blob.posy < virtual_distance:
+            if blob.size==0 or blob.posy < virtual_distance:
                 return True
 
     def _search_for_color(self, target_color):
@@ -95,6 +95,7 @@ class FindBall(Behaviour):
                     break
         finally:
             self.robot.stopMotors()
+            
             for bh in self.supress_list:
                 bh.supress = False
 
